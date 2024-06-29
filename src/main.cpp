@@ -1,13 +1,14 @@
 #include <QWidget>
 #include <QApplication>
 
+#include "asmTableWidget.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
 	QApplication app(argc, argv);
-	QWidget w;
-	w.resize(640, 480);
-	w.setWindowTitle("Hello World");
-	w.show();
+
+	AsmTableWidget* widget = new AsmTableWidget("trace.log");
+	widget->show();
+
 	return app.exec();
 }

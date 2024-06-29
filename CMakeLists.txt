@@ -8,30 +8,38 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# ÉèÖÃQtµÄ°²×°Â·¾¶
+# è®¾ç½®Qtçš„å®‰è£…è·¯å¾„
 set(Qt6_DIR "D:/Qt/6.5.3/msvc2019_64/lib/cmake")
 set(CMAKE_PREFIX_PATH ${Qt6_DIR})
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_CURRENT_SOURCE_DIR}/ui)
 
-# ²éÕÒQt6µÄ×é¼ş
+# æŸ¥æ‰¾Qt6çš„ç»„ä»¶
 find_package(Qt6 COMPONENTS Widgets Core Gui REQUIRED)
 
-# µİ¹é²éÕÒÔ´ÎÄ¼ş
+# é€’å½’æŸ¥æ‰¾æºæ–‡ä»¶
 file(GLOB_RECURSE HEADER_FILES "./src/*.h")
 file(GLOB_RECURSE SOURCE_FILES "./src/*.cpp")
+file(GLOB_RECURSE UI_FILES "./ui/*.ui") # æ·»åŠ è¿™ä¸€è¡Œé€’å½’æŸ¥æ‰¾ .ui æ–‡ä»¶
 
-# Ìí¼Ó¿ÉÖ´ĞĞÎÄ¼ş
-add_executable(timeDebuger ${HEADER_FILES} ${SOURCE_FILES})
+# æ·»åŠ å¯æ‰§è¡Œæ–‡ä»¶
+add_executable(timeDebuger ${HEADER_FILES} ${SOURCE_FILES} ${UI_FILES}) # æ·»åŠ  ${UI_FILES}
 
-# ÉèÖÃ°üº¬Ä¿Â¼
+# è®¾ç½®åŒ…å«ç›®å½•
 target_include_directories(timeDebuger
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/asmTableWidget
 )
 
-# Á´½ÓQt6µÄÄ£¿é
+# é“¾æ¥Qt6çš„æ¨¡å—
 target_link_libraries(timeDebuger
     PRIVATE
     Qt6::Widgets
     Qt6::Core
     Qt6::Gui
 )
+
+# å°†æºæ–‡ä»¶æŒ‰ç›®å½•åˆ†ç»„
+source_group("Header Files" FILES ${HEADER_FILES})
+source_group("Source Files" FILES ${SOURCE_FILES})
+source_group("UI Files" FILES ${UI_FILES})
