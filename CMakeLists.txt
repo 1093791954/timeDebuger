@@ -21,6 +21,7 @@ file(GLOB_RECURSE HEADER_FILES "./src/*.h")
 file(GLOB_RECURSE SOURCE_FILES "./src/*.cpp")
 file(GLOB_RECURSE UI_FILES "./ui/*.ui") # 添加这一行递归查找 .ui 文件
 
+
 # 添加可执行文件
 add_executable(timeDebuger ${HEADER_FILES} ${SOURCE_FILES} ${UI_FILES}) # 添加 ${UI_FILES}
 
@@ -39,7 +40,12 @@ target_link_libraries(timeDebuger
     Qt6::Gui
 )
 
+file(GLOB ASMTABLE_DIR "./src/asmTableWidget/*")
+file(GLOB SOURCE_DIR "./src/*.cpp")
+file(GLOB HEADER_DIR "./src/*.h")
+
 # 将源文件按目录分组
-source_group("Header Files" FILES ${HEADER_FILES})
-source_group("Source Files" FILES ${SOURCE_FILES})
-source_group("UI Files" FILES ${UI_FILES})
+source_group("asmTableWidget" FILES ${ASMTABLE_DIR})
+source_group("sources" FILES ${SOURCE_DIR})
+source_group("headers" FILES ${HEADER_DIR})
+source_group("ui" FILES ${UI_FILES})
