@@ -23,6 +23,21 @@ void AsmTableWidget::on_table_valueChanged(int value)
 	}
 }
 
+void AsmTableWidget::on_itemClicked(QTableWidgetItem* item)
+{
+	//qDebug() << "Clicked item:" << item->text();
+	//qDebug() << "Clicked row:" << item->row();
+	// 获取该行第一列的内容
+	QString address = ui.AsmTable->item(item->row(), 0)->text();
+	//qDebug() << "address:" << address;
+
+	// 获取该地址对应的寄存器
+	QString reg = m_dirToReg[address];
+	//qDebug() << "regs:" << reg;
+
+	emit changedAsmCmd(reg);
+}
+
 void AsmTableWidget::init()
 {
 	// m_asmFile打开目标文件
@@ -45,11 +60,18 @@ void AsmTableWidget::init()
 	ui.AsmTable->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	// 设置表格不可排序
 	ui.AsmTable->setSortingEnabled(false);
+	// 选中则高亮一行
+	ui.AsmTable->setSelectionBehavior(QAbstractItemView::SelectRows);
 
 	readFileToTable();
 
+	// 使控件选中第一行
+	ui.AsmTable->selectRow(0);
+
 	// 初始化信号槽 table 滚动信号
 	connect(ui.AsmTable->verticalScrollBar(), &QScrollBar::valueChanged, this, &AsmTableWidget::on_table_valueChanged);
+	connect(ui.AsmTable, &QTableWidget::itemClicked, this, &AsmTableWidget::on_itemClicked);
+	connect(ui.AsmTable, &QTableWidget::itemActivated, this, &AsmTableWidget::on_itemClicked);
 }
 
 void AsmTableWidget::readFileToTable()
@@ -74,7 +96,7 @@ void AsmTableWidget::readFileToTable()
 		}
 		// 将读取到的数据放入ui.AsmTable表格中
 		QString asmCmdLine = m_stream.readLine();
-		qDebug() << "asmCmdLine:" << asmCmdLine;
+		//qDebug() << "asmCmdLine:" << asmCmdLine;
 		QString registerLine = m_stream.readLine();
 		m_stream.readLine(); // QString emptyLine
 
@@ -88,8 +110,8 @@ void AsmTableWidget::readFileToTable()
 		//插入元素
 		ui.AsmTable->setItem(RowCont, 0, new QTableWidgetItem(result.at(0)));
 		ui.AsmTable->setItem(RowCont, 1, new QTableWidgetItem(result.at(1)));
-		
-		m_dirToReg.insert(std::make_pair(result.at(0),registerLine));
+
+		m_dirToReg.insert(std::make_pair(result.at(0), registerLine));
 	}
 }
 

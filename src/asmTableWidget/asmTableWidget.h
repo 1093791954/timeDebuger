@@ -19,7 +19,7 @@ public:
 private slots:
 	// 滚动条改变
 	void on_table_valueChanged(int value);
-
+	void on_itemClicked(QTableWidgetItem* item);
 private:
 	void init();
 	void readFileToTable();
@@ -32,4 +32,7 @@ private:
 	QTextStream m_stream;
 	
 	std::map<QString, QString> m_dirToReg;
+
+signals:
+	void changedAsmCmd(const QString& regs);
 };
