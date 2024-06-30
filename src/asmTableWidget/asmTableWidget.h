@@ -1,9 +1,11 @@
-#pragma once
+ï»¿#pragma once
 
 #include <QWidget>
 #include <QString>
 #include <QFile>
 #include <QScrollBar>
+
+#include <map>
 
 #include "ui_DebugAssembly.h"
 
@@ -15,16 +17,19 @@ public:
 	~AsmTableWidget();
 
 private slots:
-	// ¹ö¶¯Ìõ¸Ä±ä
+	// æ»šåŠ¨æ¡æ”¹å˜
 	void on_table_valueChanged(int value);
 
 private:
 	void init();
 	void readFileToTable();
+	QStringList splitLogCmd(QString line);
 private:
 	Ui::DebugAssembly ui;
 
 	QString m_asmFilePath;
 	QFile m_asmFile;
-
+	QTextStream m_stream;
+	
+	std::map<QString, QString> m_dirToReg;
 };

@@ -1,4 +1,4 @@
-#include <QWidget>
+﻿#include <QWidget>
 #include <QApplication>
 
 #include "asmTableWidget.h"
